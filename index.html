@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pin Generator</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="pin-generator half-width">
+                    <input class="form-control" type="text" id="generateDisplay">
+                    <button class="generate-btn"  onclick="generateBtn()">Generate Pin</button>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="input-section half-width">
+                    <input class="form-control" type="text" id="display">
+                    <div class="numbers">
+                        <div class="calc-body">
+                            <div class="calc-button-row">
+                              <div class="button" onclick="getElement(7)">7</div>
+                              <div class="button" onclick="getElement(8)">8</div>
+                              <div class="button" onclick="getElement(9)">9</div>
+                            </div>
+                            <div class="calc-button-row">
+                              <div class="button" onclick="getElement(4)">4</div>
+                              <div class="button" onclick="getElement(5)">5</div>
+                              <div class="button" onclick="getElement(6)">6</div>
+                            </div>
+                            <div class="calc-button-row">
+                              <div class="button" onclick="getElement(1)">1</div>
+                              <div class="button" onclick="getElement(2)">2</div>
+                              <div class="button" onclick="getElement(3)">3</div>
+                            </div>
+                            <div class="calc-button-row">
+                                <div class="button" onclick="backspace()"><</div>
+                                <div class="button" onclick="getElement(0)">0</div>
+                                <div class="button" onclick="getElement(9991)">C</div>
+                            </div>
+                            <div>
+                                <button type="submit" class="submit-btn" id="submitBtn">Submit</button>
+                                <p class="action-left"><span id="tryLeft">3</span> try left</p>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="notify-section">
+            <p class="notify" id="pinNotMatch">❌ Pin Didn't Match, Please try again</p>
+            <p class="notify" id="pinMatch">✅ Pin Matched... Secret door is opening for you</p>
+            <p class="notify" id="typeYourNumber">❌ please type your number</p>
+        </div>
+    </div>
+
+
+
+    <script>
+
+        //this is display none (pinNoMatch and pinMatch and extra work typeYourNumber)   
+        var pinNotMatch =document.getElementById("pinNotMatch");
+        pinNotMatch.style.display = "none";
+
+        var pinMatch =document.getElementById("pinMatch");
+        pinMatch.style.display = "none";
+
+        var typeYourNumber =document.getElementById("typeYourNumber");
+        typeYourNumber.style.display = "none";
+
+
+
+        //this is the generate section with 4 digit
+        function generateBtn(){
+            var generateDisplay = document.getElementById("generateDisplay").value;
+            var generateDisplay = Math.random() * (9999 - 1000 + 1) + 1000;  
+            var output = Math.round(generateDisplay);
+           document.getElementById("generateDisplay").value = output;
+        }
+
+        //this is the calculator digit section + clear button 
+        function getElement(digit){
+            document.getElementById("display").value += digit;
+            if(digit=="9991"){
+             document.getElementById("display").value ="";
+             }
+        }
+
+        //this is the backspace section
+        function backspace(){
+            var preValue = display.value;
+            display.value = preValue.substr(0, preValue.length - 1);
+        }
+
+        //here pin match and no match section
+        var submitBtn = document.getElementById("submitBtn");
+        submitBtn.addEventListener("click",function(){ 
+
+        if(generateDisplay.value =="" || display.value ==""){
+        var typeYourNumber =document.getElementById("typeYourNumber");
+        typeYourNumber.style.display = "block";
+        }    
+           
+       else if(generateDisplay.value == display.value){
+        var pinMatch =document.getElementById("pinMatch");
+        pinMatch.style.display = "block";
+
+        var submitBtn = document.getElementById("submitBtn");
+        submitBtn.style.display ="none";
+
+        var pinNotMatch =document.getElementById("pinNotMatch");
+        pinNotMatch.style.display = "none";
+
+        var typeYourNumber =document.getElementById("typeYourNumber");
+        typeYourNumber.style.display = "none";
+        }
+
+        else{
+            var pinNotMatch =document.getElementById("pinNotMatch");
+            pinNotMatch.style.display = "block";
+
+            var typeYourNumber =document.getElementById("typeYourNumber");
+            typeYourNumber.style.display = "none";
+            
+        //this is the tryLeft section
+            var tryLeft = document.getElementById("tryLeft").innerText;
+           var result = tryLeft - 1;
+          document.getElementById("tryLeft").innerText = result;
+          if(result == 0){
+            var submitBtn = document.getElementById("submitBtn");
+            submitBtn.style.display ="none";
+          }
+        }
+    })
+
+</script>
+
+</body>
+</html>
